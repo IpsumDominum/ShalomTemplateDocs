@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>About - Shalom Template</title>
+  <title>Pipeline(How it works) - Shalom Template</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,8 +18,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "About";
-    var mkdocs_page_input_path = "about.md";
+    var mkdocs_page_name = "Pipeline(How it works)";
+    var mkdocs_page_input_path = "pipeline.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -59,12 +59,18 @@
                     <li class="toctree-l1"><a class="reference internal" href="../templates/">Custom Templates</a>
                     </li>
                 </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../pipeline/">Pipeline(How it works)</a>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Pipeline(How it works)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#structureloader">StructureLoader</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dataloader">DataLoader</a>
+    </li>
+    </ul>
                     </li>
                 </ul>
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">About</a>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
                     </li>
                 </ul>
                 <ul>
@@ -92,7 +98,7 @@
     
       
     
-    <li>About</li>
+    <li>Pipeline(How it works)</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -103,8 +109,38 @@
           <div role="main">
             <div class="section">
               
-                <p>Shalom Templates 2020<br>
-Aule Limited</p>
+                <h1 id="pipeline">Pipeline</h1>
+<p>Shalom template works around an Object called <code>Pipeline()</code>.<br>
+<code>Pipeline()</code> essentially Loads everything that needs to be loaded,
+in order, and pass the data from one loaded thing to the next, and then
+finally all to the builder, which checks dependencies etc and builds
+the final output.<br><br>
+<code>buildpipline.py</code></p>
+<pre><code>class Pipeline()
+    def __init__(self):
+        #-------------------Loads project----------------------
+        self.projectLoader = projectLoader()
+        self.project = projectLoader.load_project() #Currently config is not in use
+        self.projectName = self.project["name"]        
+        #-------------------Load Data and Components-----------
+        self.data_loader = DataLoader()
+        self.component_loader = ComponentLoader()
+        #-------------------Build Project----------------------
+        self.builder = TemplateBuilder(self.projectName)
+        buildpipe = self.get_build_pipe(self.project["parsed"])            
+        self.builder.build(buildpipe)
+    def get_build_pipe(self):
+        #-------------------Get Data---------------------------        
+        data = self.data_loader.load(parsed["models"])
+        #-------------------Get Components---------------------        
+        componentTemplates = self.component_loader.load(parsed["components"])        
+        #-------------------Check dependencies-----------------
+        self.check_dependencies(parsed)
+        #-------------------Build buildpipe--------------------
+        buildpipe = self.construct_build_pipe(parsed,data,componentTemplates)
+</code></pre>
+<h2 id="structureloader">StructureLoader</h2>
+<h2 id="dataloader">DataLoader</h2>
               
             </div>
           </div>
@@ -112,10 +148,10 @@ Aule Limited</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../todo/" class="btn btn-neutral float-right" title="TODO">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../pipeline/" class="btn btn-neutral" title="Pipeline(How it works)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../templates/" class="btn btn-neutral" title="Custom Templates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -141,10 +177,10 @@ Aule Limited</p>
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../pipeline/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../templates/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../todo/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
